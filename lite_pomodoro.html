@@ -1,0 +1,67 @@
+<html>
+<head>
+    <title>PomodoroMM</title>
+</head>
+<body onload="startTime()">
+	<div>Agora: </div>
+	<div id="txt"></div>
+	
+	<input type="hidden" id="parada" value="0"/>
+	
+	<button onClick="comecar()">Começar</button>
+	<div id="comeco"></div>
+	<div id="termino"></div>
+	
+	<script>	
+		var comeco = "";
+		
+		var comecou = false;
+		
+		function obterHora(){ var h = new Date().getHours();   return h; }
+		function obterMin() { var m = new Date().getMinutes(); return m; }
+		function obterSeg() { var s = new Date().getSeconds(); return s; }
+		
+		function comecar() {
+			comeco = (obterHora() * 60) + checkTime(obterMin());			
+			var parada = comeco + 25;//tempo em minutos do alarme			
+			document.getElementById('parada').setAttribute('value', parada);
+			comecou = true;
+			document.getElementById('comeco').innerHTML = "Início: " +  obterHora() + ":" + obterMin();
+			
+			var horaFim = Math.floor((parada/60));
+			var minFim = Math.floor( (      (parada/60) - Math.floor(parada/60)      )*60 );
+			document.getElementById('termino').innerHTML = "Fim: " +  horaFim + ":" + minFim;
+		}
+	
+		function startTime() {
+		
+			var hoje = new Date();
+			
+			var hora = hoje.getHours();
+			var min = hoje.getMinutes();
+			var seg = hoje.getSeconds();
+			
+			min = checkTime(min);
+			seg = checkTime(seg);
+			
+			var paradaa = document.getElementById('parada').value;
+			var agoraa = (hora * 60) + min;
+			
+			if (agoraa >= paradaa && comecou){
+				alert('Buzzer');
+				comecou = false;
+			}
+			
+			document.getElementById('txt').innerHTML = hora + ":" + min + ":" + seg;
+			var tempo = setTimeout(startTime, 500);
+		}
+		
+		function checkTime(i) {
+			if (i < 10) {
+				i = "0" + i
+			};
+			return i;
+		}
+		
+	</script>
+</body>
